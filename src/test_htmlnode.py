@@ -21,12 +21,12 @@ class TestTextNode(unittest.TestCase):
         print(node.to_html())
         self.assertEqual(node.to_html(), '<p target="_blank">www.google.com</p>')
 
-    def test_to_hetml_with_children(self):
+    def test_to_html_with_children(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
 
-    def test_to_hetml_with_children2(self):
+    def test_to_html_with_children2(self):
         grandchild_node = LeafNode("b", "grandchild")
         child_node = ParentNode("span", [grandchild_node])
         parent_node = ParentNode("div", [child_node])
