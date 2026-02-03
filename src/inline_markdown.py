@@ -1,5 +1,5 @@
 from textnode import TextNode, TextType
-from inline_markdown import extract_markdown_images, extract_markdown_links
+from image_and_links_extract import extract_markdown_images, extract_markdown_links
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -55,4 +55,33 @@ def split_nodes_image(old_nodes):
 
 
 def split_nodes_link(old_nodes):
-    pass
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.PLAIN_TEXT:
+            new_nodes.append(node)
+            continue
+
+        original_text = node.text
+        links = extract_markdown_links(original_text)
+
+        if len(links) == 0:
+            new_nodes.append(node)
+            continue
+
+        for link_text, image_link in links:
+            sections = original_text.split(f"[{link_text}]({image_link})", 1)
+
+            if len(sections) != 2:
+                raise ValueError("Invalid markdown, image section not closed")
+
+            if sections[0] != "":
+                new_nodes.append(TextNode(sections[0], TextType.PLAIN_TEXT))
+
+            new_nodes.append(TextNode(link_text, TextType.LINK, image_link))
+
+            original_text = sections[1]
+
+        if original_text != "":
+            new_nodes.append(TextNode(original_text, TextType.PLAIN_TEXT))
+
+    return new_nodes
