@@ -68,16 +68,18 @@ def split_nodes_link(old_nodes):
             new_nodes.append(node)
             continue
 
-        for link_text, image_link in links:
-            sections = original_text.split(f"[{link_text}]({image_link})", 1)
+        for link_text, link_url in links:
+            # Split the text at the first occurrence of this link pattern
+            pattern = f"[{link_text}]({link_url})"
+            sections = original_text.split(pattern, 1)
 
             if len(sections) != 2:
-                raise ValueError("Invalid markdown, image section not closed")
+                raise ValueError("Invalid markdown, link section not closed")
 
             if sections[0] != "":
                 new_nodes.append(TextNode(sections[0], TextType.PLAIN_TEXT))
 
-            new_nodes.append(TextNode(link_text, TextType.LINK, image_link))
+            new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
 
             original_text = sections[1]
 

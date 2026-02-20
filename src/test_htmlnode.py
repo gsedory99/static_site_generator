@@ -18,7 +18,7 @@ class TestTextNode(unittest.TestCase):
 
     def test_leaf_to_html(self):
         node = LeafNode("p", "www.google.com", {"target": "_blank"})
-        print(node.to_html())
+        # print(node.to_html())
         self.assertEqual(node.to_html(), '<p target="_blank">www.google.com</p>')
 
     def test_to_html_with_children(self):
