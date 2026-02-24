@@ -24,7 +24,9 @@ from markdown_to_html import markdown_to_html_node
 #         f.write(template_content)
 
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(
+    dir_path_content, template_path, dest_dir_path, basepath="/"
+):
     for item in os.listdir(dir_path_content):
         src_path = Path(dir_path_content) / item
         dst_path = Path(dest_dir_path) / item
@@ -45,6 +47,8 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
 
             template_content = template_content.replace("{{ Title }}", title)
             template_content = template_content.replace("{{ Content }}", html)
+            template_content = template_content.replace('href="/', 'href="{basepath}')
+            template_content = template_content.replace('src="/', 'src="{basepath}')
 
             dst_path = dst_path.with_suffix(".html")
             os.makedirs(os.path.dirname(dst_path), exist_ok=True)
