@@ -9,7 +9,8 @@ def main():  # Test the new text_to_textnodes function
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
         generate_pages_recursive("content", "template.html", "docs", basepath)
-    generate_pages_recursive("content", "template.html", "docs")
+    else:
+        generate_pages_recursive("content", "template.html", "docs")
 
 
 if __name__ == "__main__":
