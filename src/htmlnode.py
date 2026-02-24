@@ -22,11 +22,11 @@ class LeafNode(HTML_Node):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
-        if not self.value:
-            raise ValueError
         if not self.tag:
             return self.value
-
+        if self.value is None:
+            # Handle self-closing tags (e.g., img)
+            return f"<{self.tag}{self.props_to_html()} />"
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
 
